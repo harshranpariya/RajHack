@@ -1,0 +1,70 @@
+<html>
+	<head>
+    <% include head.html %>
+  </head>
+
+  <body style="text-size: 24px">
+    <div class = "wrapper">
+      <% include header.html %> 
+    </div>
+
+    <div class = "content">
+    <form >
+      <fieldset style="margin: 30px 10px; ">
+        <legend align="center">Feed Us:</legend>
+        <div id="quesRes" class="fl w-100"></div>
+      </fieldset>
+      </form>
+    </div>
+    <% include footer.html %>
+
+    <script>
+
+    var quizObj = [
+      {
+        "question": "Is this toilet open? શું આ શૌચાલય ખુલ્લું છે?",
+        "choice": ["Yes હા", "No ના"]
+      },
+      {
+        "question": "Is it Women-friendly? તે મહિલા મૈત્રીપૂર્ણ છે?",
+        "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
+      },
+      {
+        "question": "Is this clean toilet? શું આ સ્વચ્છ શૌચાલય છે?",
+        "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
+      },
+      {
+        "question": "Is water facility available? શું પાણીની સુવિધા ઉપલબ્ધ છે?",
+        "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
+      },
+      {
+        "question": "Are taps working properly? નળ યોગ્ય રીતે કામ કરે છે",
+        "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
+      }
+
+    ];
+
+    var track = [];
+
+    var maxQues = 5;
+    var ne = 1;
+    var rand = Math.floor(Math.random() * maxQues);
+
+    var str = '<div class="container"><h2 class="header"></h2><br><h4>';
+
+    for (var i = 0; i < ne; i++) {
+
+      var rand = Math.floor(Math.random() * maxQues);
+      str += quizObj[rand].question + '<h4>';
+      str += '<form><table>' +
+        '<tr><td id="a1" ><input type="radio"   name="radio" group="1"'  + i + '"/>' + '&nbsp;&nbsp;' + quizObj[rand].choice[0] + '</td></tr>' +
+        '<tr><td id="a2"><input type="radio"  name="radio"   group="1"' + i + '" />' + '&nbsp;&nbsp;' + quizObj[rand].choice[1] + '</td></tr>' +
+        '</table></form>';
+      track[i] = rand;
+    }
+    str += '<br><div class="ph3"><a href="/nearby" class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black" href="#0">Submit</a></div>';
+    document.getElementById('quesRes').innerHTML = str;
+  </script>
+  </body>
+
+</html>

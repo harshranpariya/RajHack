@@ -1,2 +1,1 @@
-# RajHack
-Sauchalaya.in 
+# sauchalaya.in
