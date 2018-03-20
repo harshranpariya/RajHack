@@ -70,39 +70,38 @@ app.post("/api/photo", function(req, res) {
       req.body.lng,
       req.body.feedback
     ]);
-    
+
     if (err) {
       return res.end("Error uploading file.");
     } else {
-      if(err){ 
-            res.send('Error updating Cells')
-          }else {
-          res.send(' Cells Updated');
-          num += 1
-          }
-      // MongoClient.connect("mongodb://localhost:27017/sauchalaya", function(
-      //   err,
-      //   client
-      // ) {
-      //   if (err) throw err;
-      //   var db = client.db("sauchalaya");
-      //   db.collection("Location", function(err, collection) {
-      //     collection.insert({
-      //       city: req.body.city,
-      //       latitude: req.body.lat,
-      //       longitude: req.body.lng,
-      //       feedback: req.body.feedback
-      //     });
+      if (err) {
+        res.send("Error updating Cells");
+      } else {
+        res.send(" Cells Updated");
+        num += 1;
+      }
+      MongoClient.connect("mongodb://localhost:27017/sauchalaya", function(
+        err,
+        client
+      ) {
+        if (err) throw err;
+        var db = client.db("sauchalaya");
+        db.collection("Location", function(err, collection) {
+          collection.insert({
+            city: req.body.city,
+            latitude: req.body.lat,
+            longitude: req.body.lng,
+            feedback: req.body.feedback
+          });
 
-      //     db.collection("Location").count(function(err, count) {
-      //       if (err) throw err;
+          db.collection("Location").count(function(err, count) {
+            if (err) throw err;
 
-      //       console.log("Total Rows: " + count);
-      //     });
-      //   });
-      // });
+            console.log("Total Rows: " + count);
+          });
+        });
+      });
     }
-    
   });
 });
 
