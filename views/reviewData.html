@@ -22,23 +22,23 @@
 
     var quizObj = [
       {
-        "question": "Is this toilet open? શું આ શૌચાલય ખુલ્લું છે?",
+        "question": "Is this toilet open? क्या यह शौचालय खुला है?",
         "choice": ["Yes હા", "No ના"]
       },
       {
-        "question": "Is it Women-friendly? તે મહિલા મૈત્રીપૂર્ણ છે?",
+        "question": "Is it Women-friendly? क्या यह महिलाओं के अनुकूल है?",
         "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
       },
       {
-        "question": "Is this clean toilet? શું આ સ્વચ્છ શૌચાલય છે?",
+        "question": "Is this clean toilet? क्या यह स्वच्छ शौचालय है?",
         "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
       },
       {
-        "question": "Is water facility available? શું પાણીની સુવિધા ઉપલબ્ધ છે?",
+        "question": "Is water facility available? क्या पानी की सुविधा उपलब्ध है?",
         "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
       },
       {
-        "question": "Are taps working properly? નળ યોગ્ય રીતે કામ કરે છે",
+        "question": "Are taps working properly? नल ठीक से काम कर रहे हैं?",
         "choice": ["Yes હા", "No ના"],  //quizObj[2].choice[0],quizObj[2].choice[1]
       }
 
@@ -57,12 +57,11 @@
       var rand = Math.floor(Math.random() * maxQues);
       str += quizObj[rand].question + '<h4>';
       str += '<form><table>' +
-        '<tr><td id="a1" ><input type="radio"   name="radio" group="1"'  + i + '"/>' + '&nbsp;&nbsp;' + quizObj[rand].choice[0] + '</td></tr>' +
-        '<tr><td id="a2"><input type="radio"  name="radio"   group="1"' + i + '" />' + '&nbsp;&nbsp;' + quizObj[rand].choice[1] + '</td></tr>' +
+        '<tr><td id="a1" ><a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-dark-green" href="/nearby">Yes | हा </a></td><td id="a2"><a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-dark-red" href="/nearby">No | नहीं</a></td></tr>' +
+        '<tr></tr>' +
         '</table></form>';
       track[i] = rand;
     }
-    str += '<br><div class="ph3"><a href="/nearby" class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black" href="#0">Submit</a></div>';
     document.getElementById('quesRes').innerHTML = str;
   </script>
   </body>
