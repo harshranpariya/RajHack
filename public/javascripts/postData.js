@@ -39,9 +39,10 @@ var markers = [];
 function initMap() {
     var loc = {lat: 23.022505, lng: 72.5713621};
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 7,
+      zoom: 9,
       center: loc,
-      mapTypeId: 'terrain'
+      mapTypeId: 'terrain',
+      url: './img/mark.png'
     });
 }
 
@@ -50,7 +51,12 @@ function addMarker(loc) {
   console.log(loc);
   var marker = new google.maps.Marker({
     position: loc,
-    map: map
+    map: map,
+    icon: {
+            url: './img/mark.png',
+            anchor: new google.maps.Point(23, 50),
+            scaledSize: new google.maps.Size(40, 40)
+          }
   });
   console.log(marker);
   marker.setMap(map);
