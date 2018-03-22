@@ -20,88 +20,104 @@
         padding: 0;
       }
     </style>
-    <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-      var map;
-      var infoWindow;
-      var service;
 
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: 22.3674, lng: 70.7972 },
-          zoom: 15,
 
-          styles: [{
-            stylers: [{ visibility: 'simplified' }]
-          }, {
-            elementType: 'labels',
-            stylers: [{ visibility: 'yes' }]
-          }]
-        });
-
-        infoWindow = new google.maps.InfoWindow();
-        service = new google.maps.places.PlacesService(map);
-
-        // The idle event is a debounced event, so we can query & listen without
-        // throwing too many requests at the server.
-        map.addListener('idle', performSearch);
-      }
-
-      function performSearch() {
-        var request = {
-          bounds: map.getBounds(),
-          keyword: 'toilet'
-        };
-        service.radarSearch(request, callback);
-      }
-
-      function callback(results, status) {
-        if (status !== google.maps.places.PlacesServiceStatus.OK) {
-          console.error(status);
-          return;
-        }
-        for (var i = 0, result; result = results[i]; i++) {
-          addMarker(result);
-        }
-      }
-
-      function addMarker(place) {
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location,
-          icon: {
-            url: './img/mark.png',
-            anchor: new google.maps.Point(23, 50),
-            scaledSize: new google.maps.Size(40, 40)
-          }
-        });
-
-        google.maps.event.addListener(marker, 'click', function () {
-          service.getDetails(place, function (result, status) {
-            if (status !== google.maps.places.PlacesServiceStatus.OK) {
-              console.error(status);
-              return;
-            }
-            infoWindow.setContent(result.name +'<br />'+"Score: " + (Math.floor(Math.random() * 5)).toString() + '<br />'+"availibility : NA");
-
-            infoWindow.open(map, marker);
-          })
-            ;
-        });
-      }
-    </script>
 </head>
 
 <body>
   <% include header.html %>
 
     <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ6oNsUFLrnQQok2DDYNwTjMNRFVVSiGk&callback=initMap&libraries=places,visualization"
-      async defer></script>
+
     <% include footer.html %>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ6oNsUFLrnQQok2DDYNwTjMNRFVVSiGk&libraries=places,visualization"
+        async defer></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script type="text/javascript" src="./javascripts/geoLocation.js"></script>
+
+      <script>
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+        $(function () {
+          loadDoc()
+
+        });
+        var map;
+        var infoWindow;
+        var service;
+
+        function initMap(location) {
+          console.log('here')
+          console.log(location);
+          if (location) {
+            var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
+            map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 15,
+              center: loc,
+              mapTypeId: "terrain",
+              styles: [{
+                stylers: [{ visibility: 'simplified' }]
+              }, {
+                elementType: 'labels',
+                stylers: [{ visibility: 'yes' }]
+              }]
+            });
+            infoWindow = new google.maps.InfoWindow();
+            service = new google.maps.places.PlacesService(map);
+
+            // The idle event is a debounced event, so we can query & listen without
+            // throwing too many requests at the server.
+            map.addListener('idle', performSearch);
+          }
+
+
+        }
+
+        function performSearch() {
+          var request = {
+            bounds: map.getBounds(),
+            keyword: 'toilet'
+          };
+          service.radarSearch(request, callback);
+        }
+
+        function callback(results, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            console.error(status);
+            return;
+          }
+          for (var i = 0, result; result = results[i]; i++) {
+            addMarker(result);
+          }
+        }
+
+        function addMarker(place) {
+          var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            icon: {
+              url: './img/mark.png',
+              anchor: new google.maps.Point(23, 50),
+              scaledSize: new google.maps.Size(40, 40)
+            }
+          });
+
+          google.maps.event.addListener(marker, 'click', function () {
+            service.getDetails(place, function (result, status) {
+              if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                console.error(status);
+                return;
+              }
+              infoWindow.setContent(result.name + '<br />' + "Score: " + (Math.floor(Math.random() * 5)).toString() + '<br />' + "availibility : NA");
+
+              infoWindow.open(map, marker);
+            })
+              ;
+          });
+        }
+      </script>
 </body>
 
 </html>

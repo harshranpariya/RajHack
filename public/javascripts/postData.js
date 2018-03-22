@@ -33,14 +33,17 @@ $("#uploadForm").submit(function(e) {
 var map;
 var markers = [];
 
-function initMap() {
-  var loc = { lat: 26.8801708, lng: 75.8127086 };
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 9,
-    center: loc,
-    mapTypeId: "terrain",
-    url: "./img/mark.png"
-  });
+function initMap(location) {
+  console.log(location);
+  if (location) {
+    var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 13,
+      center: loc,
+      mapTypeId: "terrain",
+      url: "./img/mark.png"
+    });
+  }
 }
 
 function addMarker(loc) {
