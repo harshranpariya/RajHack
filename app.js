@@ -136,17 +136,11 @@ app.post("/api/photo", function(req, res) {
             feedback: req.body.feedback
           });
         });
-        db
-          .collection("Location")
-          .find({})
-          .toArray(function(err, locations) {
-            if (err) {
-              console.log(err);
-              res.json(err);
-            } else {
-              console.log(res.json(locations));
-            }
-          });
+        db.collection("Location").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          console.log(result);
+
+        });
       });
     }
     res.send("success");
