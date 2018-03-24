@@ -14,8 +14,17 @@ var request = require("request");
 var index = require("./routes/index");
 var multer = require("multer");
 var MongoClient = require("mongodb").MongoClient;
+var nodemailer = require("nodemailer");
 
 var app = express();
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "thobhanifreddy@gmail.com",
+    pass: "60bGYGTJsrc2"
+  }
+});
 
 var storage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -57,6 +66,29 @@ app.use(stylus.middleware(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", index);
+app.post("/count", function(req, res) {
+  console.log(req.body.count);
+  if (parseInt(req.body.count) == 5) {
+    console.log("email sent");
+    var mailOptions = {
+      from: "thobhanifreddy@gmail.com",
+      to: "thobhani.freddy@gmail.com",
+      subject: "Toilets not available",
+      text:
+        "This is sauchalaya.in informing you unavailablity of toilet in undifined location!"
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+        res.send("something went wrong");
+      } else {
+        console.log("Email sent: " + info.response);
+        res.send("email send");
+      }
+    });
+  }
+});
 
 app.post("/api/photo", function(req, res) {
   upload(req, res, function(err) {
@@ -94,10 +126,13 @@ app.post("/api/photo", function(req, res) {
             feedback: req.body.feedback
           });
 
-          db.collection("Location").count(function(err, count) {
-            if (err) throw err;
-
-            console.log("Total Rows: " + count);
+          db.collection("Location").find({}, function(err, locations) {
+            if (err) {
+              console.log(err);
+              res.json(err);
+            } else {
+              console.log(res.json(locations));
+            }
           });
         });
       });

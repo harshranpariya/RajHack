@@ -29,7 +29,7 @@
   <% include header.html %>
 
     <div class="fl w-100" id="map"></div>
-
+    <button type="button">No toilet found</button>
     <% include footer.html %>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ6oNsUFLrnQQok2DDYNwTjMNRFVVSiGk&libraries=places,visualization"
         async defer></script>
@@ -37,6 +37,7 @@
       <script type="text/javascript" src="./javascripts/geoLocation.js"></script>
 
       <script>
+        var count = 0;
         // This example requires the Places library. Include the libraries=places
         // parameter when you first load the API. For example:
         // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
@@ -76,6 +77,7 @@
         }
 
         function performSearch() {
+
           var request = {
             bounds: map.getBounds(),
             keyword: 'toilet'
@@ -84,6 +86,21 @@
         }
 
         function callback(results, status) {
+
+          if (status == "ZERO_RESULTS") {
+
+            count++;
+            console.log(count)
+            data = { count }
+            $.ajax({
+              url: '/count',
+              type: 'POST',
+              data: (data),
+              dataType: 'json',
+            }).done(function (data) {
+              console.log(data);
+            });
+          }
           if (status !== google.maps.places.PlacesServiceStatus.OK) {
             console.error(status);
             return;
@@ -94,6 +111,7 @@
         }
 
         function addMarker(place) {
+          console.log(place.geometry.location)
           var marker = new google.maps.Marker({
             map: map,
             position: place.geometry.location,
@@ -103,6 +121,10 @@
               scaledSize: new google.maps.Size(40, 40)
             }
           });
+
+          function addDataBaseMarker(place) {
+
+          }
 
           google.maps.event.addListener(marker, 'click', function () {
             service.getDetails(place, function (result, status) {
