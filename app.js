@@ -64,6 +64,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(stylus.middleware(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(function(req, res, next) {
+  var _send = res.send;
+  var sent = false;
+  res.send = function(data) {
+    if (sent) return;
+    _send.bind(res)(data);
+    sent = true;
+  };
+  next();
+});
 
 app.use("/", index);
 app.post("/count", function(req, res) {
@@ -125,8 +135,11 @@ app.post("/api/photo", function(req, res) {
             longitude: req.body.lng,
             feedback: req.body.feedback
           });
-
-          db.collection("Location").find({}, function(err, locations) {
+        });
+        db
+          .collection("Location")
+          .find({})
+          .toArray(function(err, locations) {
             if (err) {
               console.log(err);
               res.json(err);
@@ -134,9 +147,9 @@ app.post("/api/photo", function(req, res) {
               console.log(res.json(locations));
             }
           });
-        });
       });
     }
+    res.send("success");
   });
 });
 

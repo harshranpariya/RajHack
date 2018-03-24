@@ -58,6 +58,7 @@
               zoom: 15,
               center: loc,
               mapTypeId: "terrain",
+              gestureHandling: 'none',
               styles: [{
                 stylers: [{ visibility: 'simplified' }]
               }, {
@@ -65,6 +66,8 @@
                 stylers: [{ visibility: 'yes' }]
               }]
             });
+            google.maps.draggable = false
+            console.log(google.maps.getCameraPosition().zoom)
             infoWindow = new google.maps.InfoWindow();
             service = new google.maps.places.PlacesService(map);
 
