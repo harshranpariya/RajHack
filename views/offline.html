@@ -50,8 +50,10 @@
           var zoom = parseInt(data.zoom);
           var lat = parseFloat(data.lat);
           var lng = parseFloat(data.lng);
+          var clat = parseFloat(data.clat);
+          var clng = parseFloat(data.clng);
           console.log(zoom, lat, lng)
-          var uluru = { lat: lat, lng: lng };
+          var uluru = { lat: clat, lng: clng };
 
           map = new google.maps.Map(document.getElementById('map'), {
             zoom: zoom,

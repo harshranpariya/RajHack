@@ -31,6 +31,7 @@
       <a href="/" class="title link white dib mr3" href="#" title="Home">sauchalaya.in</a>
       <a href="/" class="title link white dib mr3 tc" href="#" title="Home">-4°</a>
       <button onClick="getOfflineData()">Offline</button>
+
     </nav>
   </header>
 
@@ -47,6 +48,7 @@
       var count = 0;
       var zoom = 12;
       var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
+      var center = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
@@ -123,6 +125,8 @@
 
       function addMarker(place) {
         zoom = map.getZoom();
+        center = map.getCenter();
+        console.log("center ", center)
         console.log("zoomed", zoom)
         console.log(place.geometry.location)
         var marker = new google.maps.Marker({
@@ -155,8 +159,8 @@
       }
 
       function getOfflineData() {
-        console.log("zoom:", zoom, loc)
-        data = { 'zoom': zoom, 'lat': loc.lat, 'lng': loc.lng }
+        console.log("zoom:", zoom, loc, center.lat(), center.lng())
+        data = { 'zoom': zoom, 'lat': loc.lat, 'lng': loc.lng, 'clat': center.lat(), 'clng': center.lng() }
         $.ajax({
           url: '/offlineData',
           type: 'POST',
