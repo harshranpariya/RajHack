@@ -22,4 +22,8 @@ router.get("/review", function(req, res, next) {
   res.render("reviewData", { title: "Express" });
 });
 
+router.get("/offline", function(req, res, next) {
+  res.render("offline", { title: "Express" });
+});
+
 module.exports = router;
