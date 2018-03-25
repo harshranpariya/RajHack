@@ -168,6 +168,11 @@
           dataType: 'json',
         }).done(function (data) {
           console.log(data);
+          if (typeof (Storage) !== "undefined") {
+            // Store
+            localStorage.setItem("data", data);
+
+          }
         });
 
       }

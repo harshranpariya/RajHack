@@ -138,7 +138,11 @@
           });
         }
 
+        if (typeof (Storage) !== "undefined") {
 
+          // Retrieve
+          data = localStorage.getItem("data");
+        }
 
         $.ajax({
           url: '/offlinrMapData',
