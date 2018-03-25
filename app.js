@@ -1,5 +1,6 @@
 var express = require("express");
 var path = require("path");
+var https = require("https");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
@@ -15,6 +16,7 @@ var index = require("./routes/index");
 var multer = require("multer");
 var MongoClient = require("mongodb").MongoClient;
 var nodemailer = require("nodemailer");
+var request = require("request");
 
 var app = express();
 
@@ -33,6 +35,12 @@ var storage = multer.diskStorage({
   filename: function(req, file, callback) {
     callback(null, String(num));
   }
+});
+
+request("https://freegeoip.net/json", function(error, response, body) {
+  console.log("error:", error); // Print the error if one occurred
+  console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
+  console.log("body:", body); // Print the HTML for the Google homepage.
 });
 
 var upload = multer({ storage: storage }).single("userPhoto");
@@ -75,27 +83,39 @@ app.use(function(req, res, next) {
   next();
 });
 
+// request("https://freegeoip.net/json", function(error, response, body) {
+//   console.log(JSON.parse(body).longitude);
+//   console.log(body);
+// });
+
 app.use("/", index);
 app.post("/count", function(req, res) {
   console.log(req.body.count);
   if (parseInt(req.body.count) == 5) {
     console.log("email sent");
-    var mailOptions = {
-      from: "thobhanifreddy@gmail.com",
-      to: "thobhani.freddy@gmail.com",
-      subject: "Toilets not available",
-      text:
-        "This is sauchalaya.in informing you unavailablity of toilet in undifined location!"
-    };
+    request("https://freegeoip.net/json", function(error, response, body) {
+      console.log("body:", body); // Print the HTML for the Google homepage.
 
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        console.log(error);
-        res.send("something went wrong");
-      } else {
-        console.log("Email sent: " + info.response);
-        res.send("email send");
-      }
+      var mailOptions = {
+        from: "thobhanifreddy@gmail.com",
+        to: "thobhani.freddy@gmail.com",
+        subject: "Toilets not available",
+        text:
+          "This is sauchalaya.in informing you unavailablity of toilet at " +
+          JSON.parse(body).latitude +
+          " " +
+          JSON.parse(body).longitude
+      };
+
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+          res.send("something went wrong");
+        } else {
+          console.log("Email sent: " + info.response);
+          res.send("email send");
+        }
+      });
     });
   }
 });
