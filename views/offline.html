@@ -40,11 +40,12 @@
 
       <script>
 
-
+        var map;
+        var infoWindow;
+        var service;
+        var maxZoomService;
         function initMap(data) {
-          var map;
-          var infoWindow;
-          var service;
+
           console.log(data)
           var zoom = parseInt(data.zoom);
           var lat = parseFloat(data.lat);
@@ -52,11 +53,12 @@
           console.log(zoom, lat, lng)
           var uluru = { lat: lat, lng: lng };
 
-          var map = new google.maps.Map(document.getElementById('map'), {
+          map = new google.maps.Map(document.getElementById('map'), {
             zoom: zoom,
             center: uluru,
             gestureHandling: 'none'
           });
+          map.setOptions({ maxZoom: zoom });
           map.addListener('idle', performSearch);
 
           infoWindow = new google.maps.InfoWindow();
@@ -70,7 +72,7 @@
 
 
         function performSearch() {
-
+          console.log("perform search called")
           var request = {
             bounds: map.getBounds(),
             keyword: 'toilet'
