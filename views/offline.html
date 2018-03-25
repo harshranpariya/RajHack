@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include head.html %>
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+      #map {
+        width: 100%;
+        height: 85%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+
+      html,
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+
+
+
+</head>
+
+<body>
+  <% include header.html %>
+
+    <div class="fl w-100" id="map"></div>
+
+
+    <% include footer.html %>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ6oNsUFLrnQQok2DDYNwTjMNRFVVSiGk&libraries=places,visualization"
+        async defer></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script type="text/javascript" src="./javascripts/geoLocation.js"></script>
+
+      <script>
+
+
+        function initMap(data) {
+          var map;
+          var infoWindow;
+          var service;
+          console.log(data)
+          var zoom = parseInt(data.zoom);
+          var lat = parseFloat(data.lat);
+          var lng = parseFloat(data.lng);
+          console.log(zoom, lat, lng)
+          var uluru = { lat: lat, lng: lng };
+
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: zoom,
+            center: uluru,
+            gestureHandling: 'none'
+          });
+          map.addListener('idle', performSearch);
+
+          infoWindow = new google.maps.InfoWindow();
+          service = new google.maps.places.PlacesService(map);
+
+          // The idle event is a debounced event, so we can query & listen without
+          // throwing too many requests at the server.
+
+
+        }
+
+
+        function performSearch() {
+
+          var request = {
+            bounds: map.getBounds(),
+            keyword: 'toilet'
+          };
+          service.radarSearch(request, callback);
+        } function callback(results, status) {
+
+          if (status == "ZERO_RESULTS") {
+
+            count++;
+            console.log(count)
+            data = { count }
+            $.ajax({
+              url: '/count',
+              type: 'POST',
+              data: (data),
+              dataType: 'json',
+            }).done(function (data) {
+              console.log(data);
+            });
+          }
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            console.error(status);
+            return;
+          }
+          for (var i = 0, result; result = results[i]; i++) {
+            addMarker(result);
+          }
+        }
+
+        function addMarker(place) {
+          zoom = map.getZoom();
+          console.log("zoomed", zoom)
+          console.log(place.geometry.location)
+          var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            icon: {
+              url: './img/mark.png',
+              anchor: new google.maps.Point(23, 50),
+              scaledSize: new google.maps.Size(40, 40)
+            }
+          });
+
+          function addDataBaseMarker(place) {
+
+          }
+
+          google.maps.event.addListener(marker, 'click', function () {
+            console.log("zoomed")
+            service.getDetails(place, function (result, status) {
+              if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                console.error(status);
+                return;
+              }
+              infoWindow.setContent(result.name + '<br />' + "Score: " + (Math.floor(Math.random() * 5)).toString() + '<br />' + "availibility : NA");
+
+              infoWindow.open(map, marker);
+            })
+              ;
+          });
+        }
+
+
+
+        $.ajax({
+          url: '/offlinrMapData',
+          type: 'POST',
+          data: ({}),
+          dataType: 'json',
+        }).done(function (data) {
+
+          initMap(data)
+
+        });
+
+
+      </script>
+
+</body>
+
+</html>

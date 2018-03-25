@@ -99,6 +99,16 @@ app.post("/count", function(req, res) {
     });
   }
 });
+var offlineData = null;
+app.post("/offlineData", function(req, res) {
+  console.log(req.body);
+  offlineData = req.body;
+  res.send("offlice data send");
+});
+
+app.post("/offlinrMapData", function(req, res) {
+  res.send(offlineData);
+});
 
 app.post("/api/photo", function(req, res) {
   upload(req, res, function(err) {
@@ -136,11 +146,13 @@ app.post("/api/photo", function(req, res) {
             feedback: req.body.feedback
           });
         });
-        db.collection("Location").find({}).toArray(function(err, result) {
-          if (err) throw err;
-          console.log(result);
-
-        });
+        db
+          .collection("Location")
+          .find({})
+          .toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+          });
       });
     }
     res.send("success");
