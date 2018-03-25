@@ -12,7 +12,7 @@ The chat Bots feature is provided so one can easily locate nearby toilet.
 * git clone : "https://github.com/thobhanifreddy/RajHack"
 * npm install
 * npm start
-# Main Header
+# App preview :
 Nearby search:
 ![alt text](https://github.com/thobhanifreddy/RajHack/blob/master/sc/Screen%20Shot%202018-03-25%20at%202.01.45%20AM.png "Logo Title Text 1")
 
