@@ -5,8 +5,9 @@ $("#uploadForm").submit(function(e) {
   var lng = $("#lng").val();
   var lat = $("#lat").val();
   var feedback = $("#feedback").val();
+  var tim = $("#sel2").val();
   console.log({ lat: lat, lng: lng });
-  console.log("data ", city, lng, lat, feedback);
+  console.log("data ", city, lng, lat, feedback , tim);
   // console.log("title",title);
   $(this).ajaxSubmit({
     data: { city: city, lng: lng, lat: lat, feedback: feedback },
@@ -36,7 +37,8 @@ var markers = [];
 function initMap(location) {
   console.log(location);
   if (location) {
-    var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
+    var loc = { lat: 20.5667 , lng: 78.8333 };
+    //var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
     map = new google.maps.Map(document.getElementById("map"), {
       zoom: 13,
       center: loc,
@@ -51,12 +53,14 @@ function addMarker(loc) {
   var marker = new google.maps.Marker({
     position: loc,
     map: map,
-    icon: {
-      url: "./img/mark.png",
-      anchor: new google.maps.Point(23, 50),
-      scaledSize: new google.maps.Size(40, 40)
+      icon: {
+        url: "./img/mark2.png",
+        anchor: new google.maps.Point(23, 50),
+        scaledSize: new google.maps.Size(40, 40)
+      
     }
   });
+  
   console.log(marker);
   marker.setMap(map);
 
