@@ -37,22 +37,16 @@ var storage = multer.diskStorage({
   }
 });
 
+// Load client secrets from a local file.
+var upload = multer({ storage: storage }).single("userPhoto");
+
 request("https://freegeoip.net/json", function(error, response, body) {
   console.log("error:", error); // Print the error if one occurred
   console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
   console.log("body:", body); // Print the HTML for the Google homepage.
 });
 
-var upload = multer({ storage: storage }).single("userPhoto");
-
-var SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
-var TOKEN_DIR =
-  (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) +
-  "/.credentials/";
-var TOKEN_PATH = TOKEN_DIR + "sheets.googleapis.com-nodejs-quickstart.json";
-
-// Load client secrets from a local file.
-
+var databaseData = [];
 var val = [];
 var num = 1;
 
@@ -107,15 +101,15 @@ app.post("/count", function(req, res) {
           JSON.parse(body).longitude
       };
 
-      transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-          console.log(error);
-          res.send("something went wrong");
-        } else {
-          console.log("Email sent: " + info.response);
-          res.send("email send");
-        }
-      });
+      // transporter.sendMail(mailOptions, function(error, info) {
+      //   if (error) {
+      //     console.log(error);
+      //     res.send("something went wrong");
+      //   } else {
+      //     console.log("Email sent: " + info.response);
+      //     res.send("email send");
+      //   }
+      // });
     });
   }
 });
@@ -158,6 +152,7 @@ app.post("/api/photo", function(req, res) {
       ) {
         if (err) throw err;
         var db = client.db("sauchalaya");
+
         db.collection("Location", function(err, collection) {
           collection.insert({
             city: req.body.city,
@@ -171,13 +166,52 @@ app.post("/api/photo", function(req, res) {
           .find({})
           .toArray(function(err, result) {
             if (err) throw err;
-            console.log(result);
+
+            result.forEach(toilet => {
+              databaseData.push({
+                lat: parseFloat(toilet.latitude),
+                lng: parseFloat(toilet.longitude)
+              });
+              console.log(databaseData);
+            });
           });
       });
     }
     res.send("success");
   });
 });
+
+MongoClient.connect("mongodb://localhost:27017/sauchalaya", function(
+  err,
+  client
+) {
+  if (err) throw err;
+  var db = client.db("sauchalaya");
+  db
+    .collection("Location")
+    .find({})
+    .toArray(function(err, result) {
+      if (err) throw err;
+      // console.log(result);
+      result.forEach(toilet => {
+        databaseData.push({
+          lat: parseFloat(toilet.latitude),
+          lng: parseFloat(toilet.longitude)
+        });
+      });
+      console.log(databaseData);
+    });
+});
+
+app.post("/databaseData", function(req, res) {
+  res.send(databaseData);
+});
+
+// app.get("/databaseData", function(req, res) {
+//   console.log("here ---> ");
+//   console.log(req.body);
+//   res.send()
+// });
 
 app.use(function(req, res, next) {
   var err = new Error("Not Found");

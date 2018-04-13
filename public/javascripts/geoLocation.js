@@ -5,8 +5,8 @@ function loadDoc() {
       var location = JSON.parse(this.responseText).loc.split(",");
       console.log(location);
       try {
-        document.getElementById("lng").value = location[1];
-        document.getElementById("lat").value = location[0];
+        document.getElementById("lng").value = 72.6655;
+        document.getElementById("lat").value = 23.1563;
       } catch (e) {}
       // this.responseText;
     }

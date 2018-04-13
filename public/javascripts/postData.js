@@ -8,7 +8,7 @@ $("#uploadForm").submit(function(e) {
   var feedback = $("#feedback").val();
   tim = $("#tm").val();
   console.log({ lat: lat, lng: lng });
-  console.log("data ", city, lng, lat, feedback , tim);
+  console.log("data ", city, lng, lat, feedback, tim);
   // console.log("title",title);
   $(this).ajaxSubmit({
     data: { city: city, lng: lng, lat: lat, feedback: feedback },
@@ -38,7 +38,7 @@ var markers = [];
 function initMap(location) {
   console.log(location);
   if (location) {
-    var loc = { lat: 20.5667, lng:78.8333 };
+    var loc = { lat: 23.1563, lng: 72.6655 };
     //var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
     map = new google.maps.Map(document.getElementById("map"), {
       zoom: 13,
@@ -51,27 +51,25 @@ function initMap(location) {
 
 function addMarker(loc) {
   console.log(loc);
-  if(tim == "forever"){
+  if (tim == "forever") {
     var marker = new google.maps.Marker({
       position: loc,
       map: map,
-        icon: {
-          url: "./img/mark.png",
-          anchor: new google.maps.Point(23, 50),
-          scaledSize: new google.maps.Size(40, 40)
-        
+      icon: {
+        url: "./img/mark.png",
+        anchor: new google.maps.Point(23, 50),
+        scaledSize: new google.maps.Size(40, 40)
       }
     });
   }
-  if(tim == "our"){
+  if (tim == "our") {
     var marker = new google.maps.Marker({
       position: loc,
       map: map,
-        icon: {
-          url: "./img/mark2.png",
-          anchor: new google.maps.Point(23, 50),
-          scaledSize: new google.maps.Size(40, 40)
-        
+      icon: {
+        url: "./img/mark2.png",
+        anchor: new google.maps.Point(23, 50),
+        scaledSize: new google.maps.Size(40, 40)
       }
     });
   }
