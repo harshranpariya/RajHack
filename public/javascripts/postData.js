@@ -38,7 +38,11 @@ var markers = [];
 function initMap(location) {
   console.log(location);
   if (location) {
+<<<<<<< HEAD
     var loc = { lat: 23.1563, lng: 72.6655 };
+=======
+    var loc = { lat: 23.0367, lng: 72.5633 };
+>>>>>>> 83cc3cdec9a0c49895726654d24466bd6f63e771
     //var loc = { lat: parseFloat(location[0]), lng: parseFloat(location[1]) };
     map = new google.maps.Map(document.getElementById("map"), {
       zoom: 13,
