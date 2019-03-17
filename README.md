@@ -35,5 +35,5 @@ Dynamic chip :
 * User can Feedback/Rate the system
 * It is multi-langual system
 ## For more info contact :
-* thonbhani.freddy@gmail.com
+* thobhani.freddy@gmail.com
 * harshranpariya@gmail.com
