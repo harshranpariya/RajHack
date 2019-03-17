@@ -34,5 +34,6 @@ Dynamic chip :
 * Can show realtime availability
 * User can Feedback/Rate the system
 * It is multi-langual system
-## For more info :
+## For more info contact :
+* thonbhani.freddy@gmail.com
 * harshranpariya@gmail.com
